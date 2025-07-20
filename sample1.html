@@ -1,16 +1,312 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Sample</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивний посібник з типів даних у Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Educational Teal & Slate -->
+    <!-- Application Structure Plan: The application is designed as a single-page educational guide. The structure is thematic, divided into "Базові типи", "Колекції", "Система типізації" and an interactive "Мнемо-картки" section. This approach allows users to first learn the concepts sequentially and then solidify their knowledge through active recall with the flashcards. The flashcard system is the core interactive element, designed to cover all topics comprehensively for effective learning. This structure was chosen to transform passive reading into an engaging learning experience. -->
+    <!-- Visualization & Content Choices: 
+        - Concepts (Lists, Tuples, etc.) -> Goal: Inform -> Presentation: Styled text sections with code blocks. Interaction: None, focus on readability. Justification: Clear, structured presentation of core theory.
+        - Code Examples -> Goal: Demonstrate -> Presentation: Code blocks with syntax highlighting simulation. Interaction: None. Justification: Provides clear, practical examples of methods.
+        - Knowledge Check -> Goal: Reinforce Learning -> Viz/Presentation: Interactive flashcards. Interaction: Flip, Next, Previous, Shuffle. Justification: Active recall is a powerful learning technique. Flashcards are a classic and effective method for this.
+        - Typing System Comparison -> Goal: Compare -> Presentation: A structured text section with a comparative code example (Python vs. JS). Justification: A direct comparison makes the abstract concepts of strong/weak typing tangible.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+        }
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            font-size: 0.9em;
+        }
+        .code-block .comment { color: #5c6370; }
+        .code-block .keyword { color: #c678dd; }
+        .code-block .string { color: #98c379; }
+        .code-block .number { color: #d19a66; }
+        .code-block .function { color: #61afef; }
+        .flashcard-container {
+            perspective: 1000px;
+        }
+        .flashcard {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .flashcard-front {
+            background-color: white;
+        }
+        .flashcard-back {
+            background-color: #e0f2f1; /* A light teal */
+            transform: rotateY(180deg);
+        }
+        .btn-primary {
+            background-color: #00796b; /* Teal */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #004d40;
+        }
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #334155;
+            transition: background-color 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
 </head>
+<body class="bg-slate-100 text-slate-800">
 
-<body>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat quo corrupti unde aliquam magnam, maxime labore
-        eos omnis possimus autem similique quae, quia nam, molestiae aperiam ratione est ut repellendus?</p>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat quo corrupti unde aliquam magnam, maxime labore
-        eos omnis possimus autem similique quae, quia nam, molestiae aperiam ratione est ut repellendus?</p>
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-teal-800">Типи даних у Python</h1>
+            <p class="mt-4 text-lg text-slate-600">Всеосяжний посібник з інтерактивними картками</p>
+        </header>
+
+        <!-- Basic Types Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 border-l-4 border-teal-500 pl-4">Базові типи</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">🔢 Числові (Numeric)</h3>
+                    <p><strong class="text-teal-700">Цілі (int):</strong> Цілі числа без дробової частини. Наприклад: <code class="bg-slate-200 px-1 rounded">-1</code>, <code class="bg-slate-200 px-1 rounded">0</code>, <code class="bg-slate-200 px-1 rounded">200</code>.</p>
+                    <p class="mt-2"><strong class="text-teal-700">Дійсні (float):</strong> Числа з десятковою частиною. Наприклад: <code class="bg-slate-200 px-1 rounded">3.14</code>, <code class="bg-slate-200 px-1 rounded">-0.01</code>.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">📝 Рядки (String)</h3>
+                    <p>Послідовність символів для зберігання тексту. Завжди беруться в одинарні <code class="bg-slate-200 px-1 rounded">' '</code> або подвійні <code class="bg-slate-200 px-1 rounded">" "</code> лапки. Рядки є <strong class="text-teal-700">незмінними</strong>.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">🤔 Логічний (Boolean)</h3>
+                    <p>Має лише два можливі значення: <code class="bg-green-200 text-green-800 px-2 py-1 rounded">True</code> (істина) та <code class="bg-red-200 text-red-800 px-2 py-1 rounded">False</code> (хиба). Використовується в логічних операціях.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collections Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 border-l-4 border-teal-500 pl-4">Колекції</h2>
+            <div class="space-y-8">
+                <!-- List -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2">📦 Списки (list)</h3>
+                    <p class="mb-4">Впорядкована, <strong class="text-teal-700">змінна</strong> колекція, що може зберігати елементи будь-яких типів, включаючи дублікати.</p>
+                    <div class="code-block">
+                        <span class="variable">numbers</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]<br>
+                        <span class="variable">numbers</span>.<span class="function">append</span>(<span class="number">4</span>)  <span class="comment"># [1, 2, 3, 4]</span><br>
+                        <span class="variable">numbers</span>[<span class="number">0</span>] = <span class="number">99</span>     <span class="comment"># [99, 2, 3, 4]</span><br>
+                        <span class="variable">numbers</span>.<span class="function">insert</span>(<span class="number">1</span>, <span class="number">55</span>) <span class="comment"># [99, 55, 2, 3, 4] - додати елемент за індексом</span><br>
+                        <span class="variable">numbers</span>.<span class="function">pop</span>()        <span class="comment"># [99, 55, 2, 3] - видалити останній елемент</span>
+                    </div>
+                </div>
+
+                <!-- Tuple -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2">💎 Кортежі (tuple)</h3>
+                    <p class="mb-4">Впорядкована, <strong class="text-red-700">незмінна</strong> колекція. Після створення її вміст не можна змінити. Це гарантує цілісність даних.</p>
+                    <div class="code-block">
+                        <span class="variable">coords</span> = (<span class="number">10</span>, <span class="number">20</span>)<br>
+                        <span class="comment"># coords[0] = 15 ❌ TypeError</span><br>
+                        <span class="variable">t</span> = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>)<br>
+                        <span class="variable">t</span>.<span class="function">count</span>(<span class="number">2</span>)  <span class="comment"># → 2 (скільки разів зустрічається 2)</span><br>
+                        <span class="variable">t</span>.<span class="function">index</span>(<span class="number">3</span>)  <span class="comment"># → 2 (індекс першого входження 3)</span>
+                    </div>
+                </div>
+
+                <!-- Set -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2">🎨 Множини (set)</h3>
+                    <p class="mb-4">Невпорядкована, <strong class="text-teal-700">змінна</strong> колекція <strong class="text-red-700">унікальних</strong> елементів. Повторення автоматично видаляються. Елементи множини мають бути <strong class="text-teal-700">хешованими</strong> (незмінними), наприклад, числа, рядки, кортежі.</p>
+                    <div class="code-block">
+                        <span class="variable">s</span> = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>}  <span class="comment"># → {1, 2, 3}</span><br>
+                        <span class="variable">s</span>.<span class="function">add</span>(<span class="number">4</span>)             <span class="comment"># → {1, 2, 3, 4}</span><br>
+                        <span class="variable">s</span>.<span class="function">remove</span>(<span class="number">2</span>)           <span class="comment"># → {1, 3, 4} (помилка, якщо елемента нема)</span><br>
+                        <span class="variable">s</span>.<span class="function">discard</span>(<span class="number">10</span>)          <span class="comment"># → {1, 3, 4} (не видає помилку)</span><br>
+                        <span class="variable">s</span>.<span class="function">union</span>({<span class="number">5</span>, <span class="number">6</span>})      <span class="comment"># → {1, 3, 4, 5, 6} (об'єднання)</span><br>
+                        <span class="variable">s</span>.<span class="function">intersection</span>({<span class="number">3</span>, <span class="number">4</span>}) <span class="comment"># → {3, 4} (перетин)</span>
+                    </div>
+                </div>
+
+                <!-- Dict -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2">📖 Словники (dict)</h3>
+                    <p class="mb-4"><strong class="text-teal-700">Змінна</strong> колекція пар "ключ-значення". Ключі мають бути унікальними та хешованими. <strong class="text-red-700">Важливо:</strong> з Python 3.7+ словники зберігають порядок вставки елементів.</p>
+                     <div class="code-block">
+                        <span class="variable">person</span> = {<span class="string">"name"</span>: <span class="string">"Оля"</span>, <span class="string">"age"</span>: <span class="number">30</span>}<br>
+                        <span class="variable">person</span>[<span class="string">"age"</span>] = <span class="number">31</span><br>
+                        <span class="variable">person</span>[<span class="string">"city"</span>] = <span class="string">"Київ"</span> <span class="comment"># додає нову пару</span><br>
+                        <span class="variable">person</span>.<span class="function">get</span>(<span class="string">"age"</span>)      <span class="comment"># → 31</span><br>
+                        <span class="variable">person</span>.<span class="function">keys</span>()        <span class="comment"># → dict_keys(['name', 'age', 'city'])</span><br>
+                        <span class="variable">person</span>.<span class="function">values</span>()      <span class="comment"># → dict_values(['Оля', 31, 'Київ'])</span><br>
+                        <span class="variable">person</span>.<span class="function">items</span>()       <span class="comment"># → dict_items([('name', 'Оля'), ...])</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typing System Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 border-l-4 border-teal-500 pl-4">Система типізації Python</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg space-y-4">
+                <p>Python властиві <strong class="text-teal-700">динамічна</strong> та <strong class="text-teal-700">сильна</strong> типізація. Це ключові характеристики мови.</p>
+                <div>
+                    <h4 class="text-xl font-semibold">Динамічна типізація</h4>
+                    <p>Вам не потрібно власноруч вказувати тип змінної (як у C++, Java). Інтерпретатор Python визначає тип автоматично під час виконання коду.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold">Сильна типізація</h4>
+                    <p>Python не дозволяє виконувати операції між несумісними типами. Це запобігає неочікуваним помилкам. Спроба змішати типи призведе до помилки <code class="bg-red-200 text-red-800 px-1 rounded">TypeError</code>.</p>
+                    <p class="mt-2">Наприклад, JavaScript (слабка типізація) спробує перетворити типи, що може призвести до дивних результатів:</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-2">
+                        <div class="code-block">
+                            <span class="comment"># Python (сильна типізація)</span><br>
+                            <span class="number">5</span> + <span class="string">"5"</span> <span class="comment"># ❌ TypeError</span>
+                        </div>
+                        <div class="code-block">
+                            <span class="comment">// JavaScript (слабка типізація)</span><br>
+                            <span class="number">5</span> + <span class="string">"5"</span> <span class="comment">// → "55" (конкатенація)</span><br>
+                            <span class="number">5</span> * <span class="string">"5"</span> <span class="comment">// → 25 (перетворення на число)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flashcards Section -->
+        <section id="flashcards">
+            <h2 class="text-3xl font-bold mb-6 border-l-4 border-teal-500 pl-4">Мнемо-картки для перевірки знань</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flashcard-container mb-6">
+                    <div id="flashcard" class="flashcard">
+                        <div id="flashcard-front" class="flashcard-face flashcard-front"></div>
+                        <div id="flashcard-back" class="flashcard-face flashcard-back"></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-center items-center gap-4">
+                    <button id="prev-btn" class="btn-secondary font-bold py-2 px-4 rounded-lg">← Назад</button>
+                    <button id="flip-btn" class="btn-primary font-bold py-3 px-6 rounded-lg text-lg">Перевернути</button>
+                    <button id="next-btn" class="btn-secondary font-bold py-2 px-4 rounded-lg">Вперед →</button>
+                </div>
+                <div class="text-center mt-4">
+                    <p id="progress-text" class="text-slate-600"></p>
+                    <button id="shuffle-btn" class="mt-2 text-teal-600 hover:text-teal-800 font-semibold">Перемішати картки</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashcardsData = [
+                { q: "Який тип даних використовується для цілих чисел?", a: "int (Цілі)" },
+                { q: "Який тип даних використовується для чисел з десятковою частиною?", a: "float (Дійсні)" },
+                { q: "В які символи беруться рядки?", a: "В одинарні (' ') або подвійні (\" \") лапки." },
+                { q: "Які два значення може мати логічний тип (boolean)?", a: "True та False" },
+                { q: "Чи можна змінити список (list) після його створення?", a: "Так, списки є змінними (mutable)." },
+                { q: "Чи можна змінити кортеж (tuple) після його створення?", a: "Ні, кортежі є незмінними (immutable)." },
+                { q: "Яка колекція зберігає тільки унікальні елементи?", a: "Множина (set)" },
+                { q: "Що таке словник (dict)?", a: "Колекція невпорядкованих (до Python 3.7) пар 'ключ-значення'." },
+                { q: "Який метод додає елемент в кінець списку?", a: "метод .append()" },
+                { q: "Що робить метод кортежу .count(x)?", a: "Рахує, скільки разів елемент 'x' зустрічається в кортежі." },
+                { q: "Що станеться, якщо додати до множини елемент, який вже існує?", a: "Нічого. Множина проігнорує дублікат." },
+                { q: "Як отримати значення зі словника за ключем, уникнувши помилки, якщо ключа немає?", a: "Використовувати метод .get('key'). Він поверне None, якщо ключа немає." },
+                { q: "Назвіть приклад незмінного типу даних.", a: "Число, рядок, кортеж." },
+                { q: "Назвіть приклад змінної колекції.", a: "Список (list), множина (set), словник (dict)." },
+                { q: "Чи зберігають словники порядок вставки елементів?", a: "Так, починаючи з версії Python 3.7." },
+                { q: "Що означає 'динамічна типізація'?", a: "Тип змінної визначається автоматично під час виконання, а не програмістом." },
+                { q: "Що означає 'сильна типізація'?", a: "Мова не дозволяє операції між несумісними типами (напр. число + рядок), що викликає помилку TypeError." },
+                { q: "Яка буде різниця між s.remove(x) та s.discard(x) для множини, якщо елемента 'x' не існує?", a: ".remove(x) викличе помилку KeyError, а .discard(x) просто нічого не зробить." },
+                { q: "Які обмеження накладаються на елементи множини?", a: "Елементи мають бути незмінними (хешованими), наприклад, числа, рядки, кортежі. Список не може бути елементом множини." },
+                { q: "Як отримати всі ключі зі словника?", a: "За допомогою методу .keys()" },
+                { q: "Як отримати всі значення зі словника?", a: "За допомогою методу .values()" },
+                { q: "Як отримати всі пари (ключ, значення) зі словника?", a: "За допомогою методу .items()" }
+            ];
+
+            let currentCardIndex = 0;
+            let isFlipped = false;
+            let cards = [...flashcardsData];
+
+            const flashcard = document.getElementById('flashcard');
+            const front = document.getElementById('flashcard-front');
+            const back = document.getElementById('flashcard-back');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const flipBtn = document.getElementById('flip-btn');
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            const progressText = document.getElementById('progress-text');
+
+            function shuffleCards() {
+                for (let i = cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cards[i], cards[j]] = [cards[j], cards[i]];
+                }
+                currentCardIndex = 0;
+                showCard();
+            }
+
+            function showCard() {
+                if (isFlipped) {
+                    flipCard();
+                }
+                setTimeout(() => {
+                    front.textContent = cards[currentCardIndex].q;
+                    back.textContent = cards[currentCardIndex].a;
+                    progressText.textContent = `Картка ${currentCardIndex + 1} з ${cards.length}`;
+                }, 150);
+            }
+
+            function flipCard() {
+                isFlipped = !isFlipped;
+                flashcard.classList.toggle('is-flipped');
+            }
+
+            prevBtn.addEventListener('click', () => {
+                currentCardIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+                showCard();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentCardIndex = (currentCardIndex + 1) % cards.length;
+                showCard();
+            });
+
+            flipBtn.addEventListener('click', flipCard);
+            shuffleBtn.addEventListener('click', shuffleCards);
+            
+            showCard();
+        });
+    </script>
 </body>
-
 </html>
